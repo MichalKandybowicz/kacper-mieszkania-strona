@@ -14,21 +14,23 @@ def create_sample_apartments(apps, schema_editor):
         (8, 'Przestronny apartament', '82.10', 4, 3, '821000.00'),
     ]
     for number, title, area, rooms, floor, price in samples:
-        Apartment.objects.using(schema_editor.connection.alias).create(
+        Apartment.objects.using(schema_editor.connection.alias).get_or_create(
             number=number,
-            title=title,
-            area=area,
-            rooms=rooms,
-            floor=floor,
-            price=price,
-            status='available',
-            description=(
-                f'Przykładowe mieszkanie M{number} o powierzchni {area} m², '
-                f'z liczbą pokoi: {rooms}. Funkcjonalna przestrzeń do '
-                'zaaranżowania według własnych potrzeb.\n\n'
-                'Dane demonstracyjne — uzupełnij opis, cenę i parametry '
-                'rzeczywistego mieszkania w panelu administracyjnym.'
-            ),
+            defaults={
+                'title': title,
+                'area': area,
+                'rooms': rooms,
+                'floor': floor,
+                'price': price,
+                'status': 'available',
+                'description': (
+                    f'Przykładowe mieszkanie M{number} o powierzchni {area} m², '
+                    f'z liczbą pokoi: {rooms}. Funkcjonalna przestrzeń do '
+                    'zaaranżowania według własnych potrzeb.\n\n'
+                    'Dane demonstracyjne — uzupełnij opis, cenę i parametry '
+                    'rzeczywistego mieszkania w panelu administracyjnym.'
+                ),
+            },
         )
 
 

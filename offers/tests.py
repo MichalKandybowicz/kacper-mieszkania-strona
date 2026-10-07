@@ -1,6 +1,10 @@
 from decimal import Decimal
+from importlib import import_module
+from types import SimpleNamespace
 
+from django.apps import apps
 from django.core.exceptions import ValidationError
+from django.db import connection
 from django.test import TestCase
 from django.urls import reverse
 
@@ -21,6 +25,18 @@ class ApartmentTests(TestCase):
         for apartment in Apartment.objects.all():
             self.assertContains(response, apartment.title)
             self.assertContains(response, apartment.get_absolute_url())
+
+    def test_reapplying_sample_data_preserves_existing_offers(self):
+        apartment = Apartment.objects.first()
+        apartment.title = 'Zaktualizowana oferta'
+        apartment.save()
+        migration = import_module('offers.migrations.0002_sample_apartments')
+        migration.create_sample_apartments(
+            apps, SimpleNamespace(connection=connection)
+        )
+        apartment.refresh_from_db()
+        self.assertEqual(Apartment.objects.count(), 8)
+        self.assertEqual(apartment.title, 'Zaktualizowana oferta')
 
     def test_detail_displays_parameters_and_status(self):
         apartment = Apartment.objects.first()
