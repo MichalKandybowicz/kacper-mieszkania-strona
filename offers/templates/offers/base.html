@@ -1,0 +1,19 @@
+{% load static %}
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Mieszkania — znajdź swoje miejsce{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'offers/style.css' %}">
+</head>
+<body>
+    <a class="skip-link" href="#content">Przejdź do treści</a>
+    <header class="site-header">
+        <a class="brand" href="{% url 'offers:list' %}">Mieszkania<span>Twoje nowe miejsce</span></a>
+        <nav aria-label="Nawigacja główna"><a href="{% url 'offers:list' %}">Wszystkie oferty</a></nav>
+    </header>
+    <main id="content">{% block content %}{% endblock %}</main>
+    <footer>Projekt demonstracyjny. Prezentowane opisy i ceny są przykładowe, nie stanowią oferty handlowej.</footer>
+</body>
+</html>

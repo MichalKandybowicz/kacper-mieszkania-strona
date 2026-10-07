@@ -1,0 +1,18 @@
+{% extends 'offers/base.html' %}
+{% block title %}M{{ apartment.number }} — {{ apartment.title }} | Mieszkania{% endblock %}
+{% block content %}
+<a class="back-link" href="{% url 'offers:list' %}">← Wszystkie mieszkania</a>
+<article class="apartment">
+    <p class="eyebrow">Mieszkanie M{{ apartment.number }}</p>
+    <h1>{{ apartment.title }}</h1>
+    <span class="status {{ apartment.status }}">{{ apartment.get_status_display }}</span>
+    <dl class="facts">
+        <div><dt>Powierzchnia</dt><dd>{{ apartment.area }} m²</dd></div>
+        <div><dt>Pokoje</dt><dd>{{ apartment.rooms }}</dd></div>
+        <div><dt>Piętro</dt><dd>{% if apartment.floor == 0 %}Parter{% else %}{{ apartment.floor }}{% endif %}</dd></div>
+    </dl>
+    <p class="price">{{ apartment.price }} zł</p>
+    <h2>O mieszkaniu</h2>
+    <div class="description">{{ apartment.description|linebreaks }}</div>
+</article>
+{% endblock %}

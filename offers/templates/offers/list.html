@@ -1,0 +1,29 @@
+{% extends 'offers/base.html' %}
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">Kameralnie. Wygodnie. Po swojemu.</p>
+    <h1>Znajdź mieszkanie<br>dla siebie.</h1>
+    <p>Poznaj nasze mieszkania. Porównaj metraże, układ pokoi i ceny — wybierz przestrzeń na nowy rozdział.</p>
+    <a class="button" href="#apartments">Zobacz mieszkania</a>
+</section>
+<section id="apartments" aria-labelledby="offers-heading">
+    <div class="section-heading"><h2 id="offers-heading">Oferty mieszkań</h2><span>{{ apartments|length }} ofert</span></div>
+    <div class="grid">
+        {% for apartment in apartments %}
+        <article class="card">
+            <div class="card-top"><span class="number">M{{ apartment.number }}</span><span class="status {{ apartment.status }}">{{ apartment.get_status_display }}</span></div>
+            <h3><a href="{{ apartment.get_absolute_url }}">{{ apartment.title }}</a></h3>
+            <dl class="facts">
+                <div><dt>Powierzchnia</dt><dd>{{ apartment.area }} m²</dd></div>
+                <div><dt>Pokoje</dt><dd>{{ apartment.rooms }}</dd></div>
+                <div><dt>Piętro</dt><dd>{% if apartment.floor == 0 %}Parter{% else %}{{ apartment.floor }}{% endif %}</dd></div>
+            </dl>
+            <p class="price">{{ apartment.price }} zł</p>
+            <a class="detail-link" href="{{ apartment.get_absolute_url }}" aria-label="Zobacz szczegóły mieszkania M{{ apartment.number }}">Zobacz szczegóły <span aria-hidden="true">→</span></a>
+        </article>
+        {% empty %}
+        <p>Obecnie nie ma ofert mieszkań. Zapraszamy ponownie wkrótce.</p>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
